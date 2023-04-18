@@ -9,13 +9,18 @@ namespace TaskManagement.Database.Models
     public class Message
     {
 
-        string Context { get; set; }
+        public static int IdCounter { get; private set; }
+        public int Id { get; set; }
+        public string Content { get; set; }
+        public User Sender { get; set; }
+        public User Receiver { get; set; }
 
-        User User { get; set; }
-        public Message(string context, User user)
+        public Message(string content, User sender, User receiver)
         {
-            Context = context;
-            User = user;
+            Id = IdCounter++;
+            Content = content;
+            Sender = sender;
+            Receiver = receiver;
         }
     }
 }

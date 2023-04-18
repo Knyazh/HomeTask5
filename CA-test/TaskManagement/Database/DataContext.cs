@@ -5,7 +5,7 @@ namespace TaskManagement.Database
     public class DataContext
     {
         public static List<User> Users { get; set; } = new List<User>();
-        public static List<Message> Emails { get; set; }=new List<Message>();
+        public static List<Message> Messages { get; set; }=new List<Message>();
 
         static DataContext()
         {
@@ -20,7 +20,7 @@ namespace TaskManagement.Database
         private static void AddUserSeeedings()
         {
             Users.Add(new User("Super", "Admin", "123321", "admin@gmail.com", true));
-            Users.Add(new User("knyaz", "elvset", "123321", "knyaz@gmail.com", false));
+            Users.Add(new User("Knyaz", "Heydarov", "123321", "knyaz@gmail.com", false));
         }
     }
 }
