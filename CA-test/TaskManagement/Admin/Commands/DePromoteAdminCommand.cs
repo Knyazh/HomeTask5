@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Database.Repository;
+using TaskManagement.Services;
 
 namespace TaskManagement.Admin.Commands
 {
@@ -13,29 +15,28 @@ namespace TaskManagement.Admin.Commands
 
         public static void Handle()
         {
+            UserRepository userRepository = new UserRepository();
+            Console.Write("Enter an email");
+            string email = Console.ReadLine()!;
+            User user = userRepository.GetUserOrDefaultByEmail(email);
 
-            Console.Write("Enter an email :");
-            string email = Console.ReadLine();
-
-            foreach (User user in DataContext.Users)
+            if (user == null)
             {
-                if (user.Email == email)
-                {
-                    if (user.IsAdmin)
-                    {
-                       user.IsAdmin = false;
-                        Console.WriteLine($"{user.Name} is now user");
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{user.Name} is already user");
-                        return;
-                    }
-                }
-
+                Console.WriteLine("Email not found");
+                return;
             }
-            Console.WriteLine("Email not found:");
+            if (!user.IsAdmin)
+            {
+                Console.WriteLine("User is alreday standar!");
+            }
+
+            if (email == UserService.CurrentUser.Email)
+            {
+                Console.WriteLine("You can't yourself!");
+                return;
+            }
+            user.IsAdmin = false;
+            Console.WriteLine("Admin successfully depromoted from admin to user!");
 
         }
     }

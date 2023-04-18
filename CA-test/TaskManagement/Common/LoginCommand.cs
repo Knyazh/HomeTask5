@@ -2,6 +2,7 @@
 using TaskManagement.Client;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Services;
 
 namespace TaskManagement.Common
 {
@@ -13,13 +14,14 @@ namespace TaskManagement.Common
             string email = Console.ReadLine()!;
             Console.Write("Enter the password:");
             string password = Console.ReadLine()!;
-
             for (int i = 0; i < DataContext.Users.Count; i++)
             {
+                
                 User user = DataContext.Users[i];
 
                 if (user.Email == email && user.Password == password)
                 {
+                    UserService.CurrentUser = user;
                     if (user.IsAdmin)
                     {
                         AdminDashboard.Introduction();
@@ -32,7 +34,7 @@ namespace TaskManagement.Common
                     }
                     else
                     {
-                        ClientDashboard.Introduction(user);
+                        ClientDashboard.Introduction();
                     }
                 }
             }

@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using TaskManagement.Admin.Commands;
 using TaskManagement.Client.Command;
 using TaskManagement.Database.Models;
+using TaskManagement.Services;
 
 namespace TaskManagement.Client
 {
     public class ClientDashboard
     {
-        public static void Introduction(User user)
+        public static void Introduction()
         {
-            Console.WriteLine($"Hello! : {user.Email} {user.Password}");
+            Console.WriteLine($"Hello! : {UserService.CurrentUser.Email} {UserService.CurrentUser.LastName}");
 
 
             Console.WriteLine("Aviable commands:");

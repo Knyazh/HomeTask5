@@ -20,7 +20,7 @@ namespace TaskManagement.Admin.Commands
                 {
                     if(user.IsAdmin)
                     {
-                        user.IsAdmin = false;
+                        user.IsBanned = false;
                         Console.WriteLine("Admin cant be ban");
                         return;
                     }

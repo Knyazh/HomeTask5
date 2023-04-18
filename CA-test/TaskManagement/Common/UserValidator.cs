@@ -178,6 +178,11 @@ namespace TaskManagement.Common
             return true;
         }
 
+        internal bool IsEmailExist(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
