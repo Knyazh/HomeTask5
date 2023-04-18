@@ -16,26 +16,21 @@ namespace TaskManagement.Common
             string password = Console.ReadLine()!;
             for (int i = 0; i < DataContext.Users.Count; i++)
             {
-                
+
                 User user = DataContext.Users[i];
 
                 if (user.Email == email && user.Password == password)
                 {
                     UserService.CurrentUser = user;
-                    if (user.IsAdmin)
-                    {
-                        AdminDashboard.Introduction();
-                    }
-
-                    else if (user.IsBanned)
+                    if (user.IsBanned)
                     {
                         Console.WriteLine($"{user.Name} {user.LastName} already banned");
                         return;
                     }
+                    if (user.IsAdmin)
+                        AdminDashboard.Introduction();
                     else
-                    {
                         ClientDashboard.Introduction();
-                    }
                 }
             }
         }

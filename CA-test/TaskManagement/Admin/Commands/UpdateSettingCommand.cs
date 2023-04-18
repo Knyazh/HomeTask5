@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagement.Common;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Services;
 
 namespace TaskManagement.Admin.Commands
 {
@@ -12,24 +14,11 @@ namespace TaskManagement.Admin.Commands
     {
         public static void Handle()
         {
-            Console.Write("Enter an email:");
-            string email =Console.ReadLine()!;
+            UserValidator userValidator = new UserValidator();
 
-
-            foreach(User user in DataContext.Users)
-            {
-                if (user.Email == email)
-                {
-                    user.Name = Console.ReadLine()!;
-                    user.LastName = Console.ReadLine()!;
-                    user.Password = Console.ReadLine()!;
-                    Console.WriteLine(user.GetShortInfo());
-                    return;
-
-                }
-            }
-            Console.WriteLine("Email not found");
+            UserService.CurrentUser.Name = userValidator.GetAndValidateFirstName();
+            UserService.CurrentUser.LastName = userValidator.GetAndValidateLastName();
+            UserService.CurrentUser.Password = userValidator.GetAndValidatePassword();
         }
-
     }
 }

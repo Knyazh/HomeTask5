@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Database.Repository;
+using TaskManagement.Services;
 
 namespace TaskManagement.Admin.Commands
 {
@@ -12,30 +14,28 @@ namespace TaskManagement.Admin.Commands
     {
         public static void Handle()
         {
-            Console.Write("Enter an email:");
+            UserRepository userRepository = new UserRepository();
+            Console.Write("Enter an email");
             string email = Console.ReadLine()!;
-            foreach (User user in DataContext.Users)
+            User user = userRepository.GetUserOrDefaultByEmail(email);
+
+            if (user == null)
             {
-                if (user.Email== email)
-                {
-                    if(user.IsAdmin)
-                    {
-                        user.IsBanned = false;
-                        Console.WriteLine("Admin cant be ban");
-                        return;
-                    }
-                    else
-                    {
-                        user.IsBanned = true;
-                        Console.WriteLine($"{user.Name} is banned");
-                        return;
-                    }
-
-                }
-
+                Console.WriteLine("User not found");
+                return;
             }
-            Console.WriteLine("Email not found");
-
+            if(user==UserService.CurrentUser)
+            {
+                Console.WriteLine("You cant ban yourself!");
+                return;
+            }
+            if (user.IsAdmin)
+            {
+                Console.WriteLine($" {user.Name} is admin you can't ban  ");
+            }
+            user.IsBanned = true;
+            userRepository.Remove(user);
+            Console.WriteLine("User successfully removed");
         }
     }
 }

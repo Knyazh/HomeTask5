@@ -38,6 +38,9 @@ namespace TaskManagement.Database.Models
             return IsAdmin ? "Yes" : "No";
         }
 
-       
+        public static implicit operator User(User v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

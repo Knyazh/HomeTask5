@@ -9,6 +9,6 @@ namespace TaskManagement.Services
 {
     internal class UserService
     {
-        public static User? CurrentUser { get; set; }
+        public static User CurrentUser { get; set; }
     }
 }

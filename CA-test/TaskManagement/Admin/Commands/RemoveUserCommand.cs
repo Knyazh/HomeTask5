@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Database.Repository;
+using TaskManagement.Services;
 
 namespace TaskManagement.Admin.Commands
 {
@@ -12,40 +14,25 @@ namespace TaskManagement.Admin.Commands
     {
         public static void Handle()
         {
-            while (true)
+            UserRepository userRepository = new UserRepository();
+            Console.Write("Enter an email");
+            string email = Console.ReadLine()!;
+            User user = userRepository.GetUserOrDefaultByEmail(email);
+
+            if (user == null)
             {
-                try
-                {
-                    Console.Write("Enter an email:");
-                    string email = Console.ReadLine()!;
-
-                    foreach (User user in DataContext.Users)
-                    {
-                        if (user.Email == email)
-                        {
-
-                            if(user.IsAdmin)
-                            {
-                                Console.WriteLine($"{user.Name} is already admin");
-                            }
-                            else
-                            {
-                            Console.WriteLine($"{user.Name} removed the ststem");
-                            DataContext.Users.Remove(user);
-                            return;
-
-                            }
-
-                        }
-                    }
-
-                    Console.WriteLine("Email not found");
-                }
-                catch
-                {
-                    Console.WriteLine("Invalid input pls try again");
-                }
+                Console.WriteLine("Email not found");
+                return;
             }
+
+            if (user.IsAdmin)
+            {
+                Console.WriteLine($" {user.Name} is admin you can't remove  ");
+            }
+           
+            userRepository.Remove(user);
+            Console.WriteLine("User successfully removed");
+
         }
     }
 }
