@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Database.Repository;
+using TaskManagement.Services;
 
 namespace TaskManagement.Client.Command
 {
@@ -12,23 +14,17 @@ namespace TaskManagement.Client.Command
     {
         public static void Handle()
         {
-            Console.Write("Enter email:");
-            string email =Console.ReadLine();
-            Console.Write("Enter password:");
-            string password =Console.ReadLine();
 
-            foreach (User user in DataContext.Users)
+            UserRepository userRepository = new UserRepository();   
+            string password = Console.ReadLine();
+
+            if(UserService.CurrentUser.Password != password)
             {
-
-                if (user.Email == email && user.Password== password)
-                {
-                    Console.WriteLine("Your acoount deleted");
-                    DataContext.Users.Remove(user);
-                    return;
-                }
-
+                Console.WriteLine("Invalid password");
+                return;
             }
-            Console.WriteLine("Email or password are incorrect");
+
+            userRepository.Remove(UserService.CurrentUser);
         }
 
     }

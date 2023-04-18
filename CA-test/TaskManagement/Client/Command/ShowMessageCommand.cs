@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagement.Database;
 using TaskManagement.Database.Models;
+using TaskManagement.Database.Repository;
+using TaskManagement.Services;
 
 namespace TaskManagement.Client.Command
 {
@@ -12,14 +14,14 @@ namespace TaskManagement.Client.Command
     {
         public static void Handle()
         {
-            
-            foreach(var user in DataContext.Users)
-            {
+            MessageRepository messageRepository = new MessageRepository();
+            List<Message> messages = messageRepository.GetAllByReceiver(UserService.CurrentUser);
 
-                foreach (var item in user.Messages)
-                {
-                    Console.WriteLine(item);
-                }
+            int currentRowNumber = 1;
+            foreach (Message message in messages)
+            {
+                Console.WriteLine($" {currentRowNumber}{message.Sender.Name} -{message.Sender.Email} | {message.Content}");
+            currentRowNumber++;
             }
 
 
